@@ -27,5 +27,29 @@
     background-color: lightgreen;
     margin: 20px;
   }
+
+  .boom{
+    background-color: red;
+  }
+
+  .miss{
+    background-color: black;
+  }
   
- 
+  .taken{
+    background-color: green;
+    /* display: none; */
+  }
+
+.horizantal{
+  flex-direction: row;
+}
+
+.vertical{
+  flex-direction: column;
+}
+
+.ship{
+  background-color: yellow;
+
+}
