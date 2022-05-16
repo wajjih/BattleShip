@@ -28,13 +28,9 @@
     margin: 20px;
   }
 
-  .boom{
-    background-color: red;
-  }
+  
 
-  .miss{
-    background-color: black;
-  }
+  
   
   .taken{
     background-color: green;
@@ -52,4 +48,25 @@
 .ship{
   background-color: yellow;
 
+}
+.destroyer{
+  background-color: chartreuse;
+}
+.submarine{
+  background-color: darkviolet;
+}
+.cruiser{
+  background-color: yellow;
+}
+.battleship{
+  background-color: coral;
+}
+.carrier{
+  background-color: green;
+}
+.boom{
+  background-color: red;
+}
+.miss{
+  background-color: lightslategray;
 }
