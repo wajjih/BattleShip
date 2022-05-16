@@ -7,10 +7,10 @@ Battleship (also known as Battleships or Sea Battle) is a strategy type guessing
 3. you hit all ships you win
 ### WireFrame
 
-generate ships
-drag your ship onto your grid
-you click to guess
-computer guesses randomly
-first to hit em all wins
+1. generate ships
+2. drag your ship onto your grid
+3. you click to guess
+4. computer guesses randomly
+5. first to hit em all wins
 
 
