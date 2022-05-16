@@ -24,7 +24,7 @@
     height: 400px;
     display: flex;
     flex-wrap: wrap;
-    background-color: lightgreen;
+    background-color: blue;
     margin: 20px;
   }
 
@@ -46,8 +46,11 @@
 }
 
 .ship{
-  background-color: yellow;
+  background-color: blue;
 
+}
+.urShip{
+  background-color: green;
 }
 .destroyer{
   background-color: chartreuse;

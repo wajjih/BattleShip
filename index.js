@@ -1,11 +1,15 @@
 //Global variables
 const userGrid = document.querySelector('.grid-user')
+const cpuGrid = document.querySelector('.grid-computer')
 const genCpu = document.querySelector('#cpuShips') 
 const userSquares = []
+const cpuSquares = []
 const width = 10
+const startBtn = document.querySelector('#start')
 const currentPlayer = 'user'
 let shotFired = -1
 let click;
+
 const resetBtn = document.querySelector('#reset')
 let hit = 0
 
@@ -38,7 +42,7 @@ const ships = [
   },
 
 ]
-//Randomizes the userSquares array and wont repeat the numbers twice. Also it's a generator function
+//Randomizes an array and wont repeat the numbers twice. Also it's a generator function
 function* shuffle(array) {
 
   var i = array.length;
@@ -59,6 +63,7 @@ function createBoard(grid, squares) {
     }
   }
   createBoard(userGrid, userSquares)
+  createBoard(cpuGrid, cpuSquares)
 
   //adding event listeners for each squaare
   
@@ -76,10 +81,18 @@ function addShotFired (){
   userSquares.forEach(square => {
     square.addEventListener('click', () => {
       if(currentPlayer === 'user') {
-        return shotFired = square.dataset.id
+        click = square
+        shotFired = square.dataset.id 
       }
     })
   })
+
+  // click = userSquares.forEach(square => {
+  //   square.addEventListener('click', ()=>{
+  //     return click = square.dataset.id
+  //   })
+  // })
+  
 }
 console.log(ships[0]);
 function genDestroyer(){
@@ -137,6 +150,7 @@ function genCarrier(){
   e.classList.add('ship')
 }
 
+
 function generate(ship){
   let randy = shuffle(userSquares)
   let rando = parseInt(randy.next().value.dataset.id)
@@ -172,6 +186,7 @@ function generate(ship){
 }
 
 function checkActual(){
+  const target = click
   // click = 
   // const target = userGrid.querySelector(`div[data-id = '50']`)
   // let actual = 0
@@ -187,22 +202,40 @@ function checkActual(){
   //   target.classList.add('boom')
   // }
   
-  userSquares.forEach(square =>{
-    square.addEventListener('click', ()=>{
-      if(square.classList.contains('ship')){
-        // square.classList.remove('ship')
-        square.classList.add('boom')
-        hit++
-        console.log(hit);
-      } else if (!square.classList.contains('ship')) {
-        return square.classList.add('miss')
-      }
-    })
-  })
+  // userSquares.forEach(square => {
+  //   square.addEventListener('click', ()=>{
+  //     if(square.classList.contains('ship')){
+  //       // square.classList.remove('ship')
+  //       square.classList.add('boom')
+  //       hit++
+  //       console.log(hit);
+  //     } else if (!square.classList.contains('ship')) {
+  //       return square.classList.add('miss')
+  //     }
+  //   })
+  // })
+  // if (target.classList.contains('ship')) {
+  //   target.classList.add('boom')
+  //   hit++
+    
+  // }
+  // target.classList.add('ship')
+  // console.log(shotFired); 
+  //console.log(target.classList.contains('ship')); 
 
+  if (target.classList.contains('ship')) { 
+    target.classList.add('boom')
+    hit++
+  } else if(!target.classList.contains('ship')){
+    target.classList.add('miss')
+  }
+  //console.log(click);  
+  
 }
 function reset(){
   userSquares.forEach(square => {
+    const checkDis = document.querySelector('#winner')
+    const display = document.createElement('div')
     if(square.classList.contains('ship')){
       square.classList.remove('ship')
     }
@@ -213,19 +246,37 @@ function reset(){
       square.classList.remove('miss')
     }
     hit = 0
+    checkDis.removeChild(checkDis.firstChild)
+    display.textContent = 'Battle Ship'
+    checkDis.appendChild(display)
+
     
   })
 }
 function checkWin(){
   const checkDis = document.querySelector('#winner')
   const display = document.createElement('div')
-  if(hit === 153){
+  if(hit === 17){
     if (checkDis.textContent) {
       checkDis.removeChild(checkDis.firstChild)
     }
     display.textContent = 'You won'
     checkDis.appendChild(display)
   }
+}
+const randi = shuffle(cpuSquares)
+
+function makeShips(){
+  cpuSquares.forEach(square => {
+    square.addEventListener('click', () => {
+      if(currentPlayer === 'user') {
+        square.classList.add('ship') 
+      }
+    })
+  })
+  // let randa = randi.next().value
+  // console.log(randa);
+
 }
 
 function doBoth(){
@@ -241,6 +292,7 @@ function generateAll(){
   genbattle()
   genCarrier()
 }
+startBtn.addEventListener('click', makeShips)
 userGrid.addEventListener('click', doBoth)
 genCpu.addEventListener('click', generateAll)
 resetBtn.addEventListener('click', reset)
