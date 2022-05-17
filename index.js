@@ -6,12 +6,14 @@ const userSquares = []
 const cpuSquares = []
 const width = 10
 const startBtn = document.querySelector('#start')
-const currentPlayer = 'user'
+let currentPlayer = 'user'
 let shotFired = -1
 let click;
+let gameOver = false
 
 const resetBtn = document.querySelector('#reset')
 let hit = 0
+let cpuHit = 0
 
 //Ships
 const ships = [
@@ -80,7 +82,7 @@ function createBoard(grid, squares) {
 function addShotFired (){
   userSquares.forEach(square => {
     square.addEventListener('click', () => {
-      if(currentPlayer === 'user') {
+      if(true) {
         click = square
         shotFired = square.dataset.id 
       }
@@ -94,7 +96,20 @@ function addShotFired (){
   // })
   
 }
-console.log(ships[0]);
+// function cpuShotFired (){
+//   cpuSquares.forEach(square => {
+//     square.addEventListener('click', () => {
+//       if(true) {
+//         click = square
+//         shotFired = square.dataset.id 
+//       }
+//     })
+//   })
+// }
+
+//console.log(ships[0]);
+
+//Functions to generate ships
 function genDestroyer(){
   const a = userGrid.querySelector(`div[data-id = '42']`)
   const b = userGrid.querySelector(`div[data-id = '52']`)
@@ -151,77 +166,42 @@ function genCarrier(){
 }
 
 
-function generate(ship){
-  let randy = shuffle(userSquares)
-  let rando = parseInt(randy.next().value.dataset.id)
+// function generate(ship){
+//   let randy = shuffle(userSquares)
+//   let rando = parseInt(randy.next().value.dataset.id)
   
 
 
-  //let wood = 0
-  //wood = randy/9
-  for(let i = 0; i < ship.width; i++){
-    let square = userGrid.querySelector(`div[data-id = '${rando}']`)
-    console.log(square)
-    if(rando+ship.width <= 99 && rando+ship.width >= 93){
-      rando-=8
-    }
+//   //let wood = 0
+//   //wood = randy/9
+//   for(let i = 0; i < ship.width; i++){
+//     let square = userGrid.querySelector(`div[data-id = '${rando}']`)
+//     console.log(square)
+//     if(rando+ship.width <= 99 && rando+ship.width >= 93){
+//       rando-=8
+//     }
 
-    if (square.classList.contains('ship')) {
+//     if (square.classList.contains('ship')) {
       
-      rando = randy.next().value.dataset.id
+//       rando = randy.next().value.dataset.id
    
-      //square = userGrid.querySelector(`div[data-id = '${rando}']`)
+//       //square = userGrid.querySelector(`div[data-id = '${rando}']`)
       
-    }
-    square.setAttribute('id', 'ship')
-    //square.classList.add('ship')
-    square.classList.add(`${ship.name}`)
+//     }
+//     square.setAttribute('id', 'ship')
+//     //square.classList.add('ship')
+//     square.classList.add(`${ship.name}`)
     
     
-    rando++
+//     rando++
     
     
     
-  }
-}
+//   }
+// }
 
 function checkActual(){
-  const target = click
-  // click = 
-  // const target = userGrid.querySelector(`div[data-id = '50']`)
-  // let actual = 0
-  // target.classList.add('taken')
-  // actual = parseInt(target.dataset.id)
-  // console.log(target)
-  // console.log(actual);
-  // console.log(shotFired);
-  // //Hit or Miss I guess they never miss huh
-  
-  // if(actual === parseInt(shotFired)){
-  //   target.classList.remove('taken')
-  //   target.classList.add('boom')
-  // }
-  
-  // userSquares.forEach(square => {
-  //   square.addEventListener('click', ()=>{
-  //     if(square.classList.contains('ship')){
-  //       // square.classList.remove('ship')
-  //       square.classList.add('boom')
-  //       hit++
-  //       console.log(hit);
-  //     } else if (!square.classList.contains('ship')) {
-  //       return square.classList.add('miss')
-  //     }
-  //   })
-  // })
-  // if (target.classList.contains('ship')) {
-  //   target.classList.add('boom')
-  //   hit++
-    
-  // }
-  // target.classList.add('ship')
-  // console.log(shotFired); 
-  //console.log(target.classList.contains('ship')); 
+  const target = click 
 
   if (target.classList.contains('ship')) { 
     target.classList.add('boom')
@@ -232,10 +212,27 @@ function checkActual(){
   //console.log(click);  
   
 }
+const randi = shuffle(cpuSquares)
+function cpuRandAttack(){
+  let randa = randi.next().value.dataset.id
+  let square = cpuGrid.querySelector(`div[data-id = '${randa}']`)
+  if(square.classList.contains('urShip')){
+    square.classList.add('boom')
+    cpuHit++
+  }else{
+    square.classList.add('miss')
+  }
+
+}
 function reset(){
+  const checkDis = document.querySelector('#winner')
+  const display = document.createElement('div')
+  checkDis.removeChild(checkDis.firstChild)
+  display.textContent = 'Battle Ship'
+  checkDis.appendChild(display)
+  hit = 0
   userSquares.forEach(square => {
-    const checkDis = document.querySelector('#winner')
-    const display = document.createElement('div')
+    
     if(square.classList.contains('ship')){
       square.classList.remove('ship')
     }
@@ -245,13 +242,45 @@ function reset(){
     if(square.classList.contains('miss')){
       square.classList.remove('miss')
     }
-    hit = 0
-    checkDis.removeChild(checkDis.firstChild)
-    display.textContent = 'Battle Ship'
-    checkDis.appendChild(display)
-
     
   })
+  cpuSquares.forEach(square => {
+    if(square.classList.contains('urShip')){
+      square.classList.remove('urShip')
+    }
+    if(square.classList.contains('boom')){
+      square.classList.remove('boom')
+    }
+    if(square.classList.contains('miss')){
+      square.classList.remove('miss')
+    }
+  })
+}
+function changePlayer(){
+  const turn = document.querySelector('#turn')
+  const turnContent = document.createElement('div')
+  if (currentPlayer === 'user') {
+    if (turn.textContent) {
+      turn.removeChild(turn.firstChild)
+    }
+    currentPlayer = 'computer'
+    //turn.removeChild(turn.firstChild)
+    turnContent.textContent = 'Computer Turn'
+    turn.appendChild(turnContent)
+    setTimeout(() => { turn.appendChild(turnContent); }, 300);
+
+  } else if(currentPlayer === 'computer'){
+    if (turn.textContent) {
+      turn.removeChild(turn.firstChild)
+    }
+    currentPlayer = 'user'
+    //turn.removeChild(turn.firstChild)
+    turnContent.textContent = 'Your Turn'
+    turn.appendChild(turnContent)
+    setTimeout(() => { turnContent.textContent = 'Your Turn'; }, 300);
+    
+  }
+  
 }
 function checkWin(){
   const checkDis = document.querySelector('#winner')
@@ -264,14 +293,26 @@ function checkWin(){
     checkDis.appendChild(display)
   }
 }
-const randi = shuffle(cpuSquares)
+function checkCpuWin(){
+  const checkDis = document.querySelector('#winner')
+  const display = document.createElement('div')
+  if(cpuHit === 17){
+    if (checkDis.textContent) {
+      checkDis.removeChild(checkDis.firstChild)
+    }
+    display.textContent = 'Computer won'
+    checkDis.appendChild(display)
+  }
+}
 
+
+//under development
 function makeShips(){
   cpuSquares.forEach(square => {
     square.addEventListener('click', () => {
-      if(currentPlayer === 'user') {
-        square.classList.add('ship') 
-      }
+      
+        square.classList.add('urShip') 
+      
     })
   })
   // let randa = randi.next().value
@@ -279,10 +320,16 @@ function makeShips(){
 
 }
 
-function doBoth(){
+function game(){
   addShotFired()
   checkActual()
   checkWin()
+  changePlayer()
+  //cpuShotFired()
+  cpuRandAttack()
+  checkCpuWin()
+  changePlayer()
+
   
 }
 function generateAll(){
@@ -292,7 +339,7 @@ function generateAll(){
   genbattle()
   genCarrier()
 }
-startBtn.addEventListener('click', makeShips)
-userGrid.addEventListener('click', doBoth)
+cpuGrid.addEventListener('click', makeShips)
+userGrid.addEventListener('click', game)
 genCpu.addEventListener('click', generateAll)
 resetBtn.addEventListener('click', reset)
