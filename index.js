@@ -231,6 +231,7 @@ function reset(){
   display.textContent = 'Battle Ship'
   checkDis.appendChild(display)
   hit = 0
+  cpuHit = 0
   userSquares.forEach(square => {
     
     if(square.classList.contains('ship')){
